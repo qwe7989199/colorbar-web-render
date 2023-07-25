@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Screen Capture with Video and Canvas</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px;
+      }
+
+      .element {
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <button id="start">Start Screen Capture</button>
+    <div class="container">
+      <div class="element">
+        <video id="video" autoplay controls></video>
+        <p>Video Element</p>
+        <p id="video_color">
+          Use third party tools to check RGB of video element.
+        </p>
+      </div>
+      <div class="element">
+        <canvas id="canvas"></canvas>
+        <p>Canvas Element</p>
+        <p id="rgb">
+          Hover over the canvas to see the color at the cursor position.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const startButton = document.getElementById("start");
+      const videoElement = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const context = canvas.getContext("2d");
+      const rgbElement = document.getElementById("rgb");
+
+      startButton.addEventListener("click", async () => {
+        try {
+          const stream = await navigator.mediaDevices.getDisplayMedia({
+            video: true,
+          });
+          videoElement.srcObject = stream;
+          videoElement.onloadedmetadata = () => {
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            draw(videoElement, context);
+          };
+          startButton.disabled = true;
+        } catch (err) {
+          console.error("Error: " + err);
+        }
+      });
+
+      function draw(video, context) {
+        context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+        requestAnimationFrame(() => draw(video, context));
+      }
+
+      canvas.addEventListener("mousemove", function (e) {
+        var x = e.clientX - canvas.getBoundingClientRect().left;
+        var y = e.clientY - canvas.getBoundingClientRect().top;
+        var imageData = context.getImageData(x, y, 1, 1);
+        var data = imageData.data;
+        var rgb = "RGB(" + data[0] + ", " + data[1] + ", " + data[2] + ")";
+        rgbElement.textContent = rgb;
+      });
+    </script>
+  </body>
+</html>
