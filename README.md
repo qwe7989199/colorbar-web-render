@@ -61,16 +61,23 @@ canvas element结果正确
 video element结果正确   
 canvas element结果错误  
 ![image](https://github.com/qwe7989199/colorbar-web-render/assets/10990771/05391514-9b5d-47c8-baae-e21b153a63cb)
-
+和Chrome一致
 
 #### screen_capture  
 video element结果错误    
 canvas element结果正确  
-![image](https://github.com/qwe7989199/colorbar-web-render/assets/10990771/4c6bed81-8793-4249-952e-16e70dd996d2)
-
+和Chrome一致，没图
 
 #### video_file  
 video element结果正确  
-canvas element结果正确  
-两者一致正确
+canvas element结果正确   
+和Chrome一致，没图  
 
+
+## 总结
+
+|浏览器|Chrome|Edge|Firefox|
+|------|------|----|-------|
+|Camera|🔺|🔺|❌|
+|Screen Capture|🔺|🔺|⚪|
+|Video File|⚪|⚪|⚪|
